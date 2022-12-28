@@ -1,4 +1,15 @@
 import scapy.all as scapy
+from optparse import OptionParser
+
+def taking_arg():
+    parser = OptionParser()
+    parser.add_option('-r', '--range', dest='range', help="Enter IP range which you want to scan (eg:- -r 192.168.1.0/24)")
+    (options, args) = parser.parse_args()
+    if(options.range):
+        return parser.parse_args()
+    else:
+        print('Oops you forgot to mention -r agrument, use -h for help')
+        exit()
 
 def scan(IP):
     answered_arp_list = []
@@ -11,10 +22,11 @@ def scan(IP):
     return answered_arp_list
 def print_design(ans):
     print('_____________________________________________')
-    print('  IP\t\t\tMAC Address\t')
+    print('  IP\t\t\t MAC Address\t')
     print('---------------------------------------------')
     for element in ans:
         print(element['ip']+'\t\t'+element['mac'])
 
-ans = scan('192.168.1.0/24')
+(options, args) = taking_arg()
+ans = scan(str(options.range))
 print_design(ans)
